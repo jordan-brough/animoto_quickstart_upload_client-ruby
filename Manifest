@@ -1,0 +1,4 @@
+Rakefile
+lib/quickstart_upload_client.rb
+test/quickstart_upload_integration_test.rb
+Manifest
