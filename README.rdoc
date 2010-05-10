@@ -1,0 +1,23 @@
+== ABOUT
+
+This is a small Ruby client (gem) to communicate with the Animoto Quickstart Upload API.
+
+== REQUIREMENTS
+
+You must be a registered Animoto affiliate and an authorized client of the Quickstart Upload API. You will need both your affiliate referral code and Upload API secret key.
+
+== USAGE
+
+To obtain resource links from the API:
+
+  client = Animoto::QuickstartUploadClient.new(AFFILIATE_REFERRAL_CODE, SECRET_KEY)
+  links = client.get_resource_links("jpg", 5)
+
+This will obtain 5 resource urls to upload .jpg files to Animoto.com
+
+To just generate a signature that is used to sign all requests to all API calls to obtain resource URLs:
+
+  client = Animoto::QuickstartUploadClient.new(AFFILIATE_REFERRAL_CODE, SECRET_KEY)
+  signature = client.generate_signature(:client_id => 'test', :n => 3, :type => 'gif')
+
+== MORE INFORMATION

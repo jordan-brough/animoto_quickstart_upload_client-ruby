@@ -12,6 +12,11 @@ class QuickstartUploadClientIntegrationTest < Test::Unit::TestCase
     @client = Animoto::QuickstartUploadClient.new(AFFILIATE_REFERRAL_CODE, SECRET_KEY)
   end
 
+  def test_generate_signature
+    signature = client.generate_signature(:client_id => 'test', :n => 3, :type => 'gif')
+    assert signature
+  end
+
   def test_get_resource_links
     links = client.get_resource_links("jpg", 5)
     assert_equal 5, links.size

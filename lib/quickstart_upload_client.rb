@@ -34,6 +34,15 @@ module Animoto
       links
     end
 
+    def generate_signature(params)
+      md5_params = Hash[params]
+      md5_params[:secret_key] = @secret_key
+      md5_params[:partner_id] = @affiliate_code
+      # sort the query string parameters alphabetically by key, then join by key=value separated by &
+      source = md5_params.keys.sort { |a, b| a.to_s <=> b.to_s }.map { |i| "#{i}=#{md5_params[i]}" }.join("&")
+      Digest::MD5.hexdigest(source)
+    end
+
     protected
 
     def do_http_get(resource, params)
@@ -54,15 +63,6 @@ module Animoto
         s << "#{k.to_s}=#{CGI::escape(params[k].to_s)}"
       end
       s.join('&')
-    end
-
-    def generate_signature(params)
-      md5_params = Hash[params]
-      md5_params[:secret_key] = @secret_key
-      md5_params[:partner_id] = @affiliate_code
-      # sort the query string parameters alphabetically by key, then join by key=value separated by &
-      source = md5_params.keys.sort { |a, b| a.to_s <=> b.to_s }.map { |i| "#{i}=#{md5_params[i]}" }.join("&")
-      Digest::MD5.hexdigest(source)
     end
   end
 end
