@@ -1,4 +1,4 @@
-require 'net/http'
+require 'net/https'
 require 'uri'
 require 'cgi'
 require 'digest/md5'
@@ -49,8 +49,10 @@ module Animoto
       params.merge!(:sig => generate_signature(params), :partner_id => @affiliate_code)
       resource += "?" + query_string(params)
       url = URI.parse(resource)
-      response = Net::HTTP.start(url.host, url.port) do |http|
-        http.get(resource)
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = url.scheme == 'https'
+      response = http.start do |http|
+        http.get(url.request_uri)
       end
 
       raise Animoto::HttpError.new(response.code, response.body) unless response.code.to_i == 200
